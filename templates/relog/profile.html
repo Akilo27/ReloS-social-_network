@@ -4,11 +4,13 @@
   {% block content %}
 
 {% load static %}
+     <h1>{{ user.username }}</h1>
 {% if avatar %}
     <img src="{{ avatar }}" alt="Avatar" width="200" height="200">
 {% endif %}
       <a href="{% url 'edit_profile' username=user.username %}" class="btn btn-primary rounded-pill px-3">edit profile</a>
       <a href="{% url 'edit_post' username=user.username %}" class="btn btn-primary rounded-pill px-3">edit post</a>
+      <a href="{% url 'messages' username=user.username %}" class="btn btn-primary rounded-pill px-3">messages</a>
       {% for b in blog %}
           <div class="text-center">
               <a href="#">{{ b.user }}</a>
