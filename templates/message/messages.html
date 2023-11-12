@@ -8,8 +8,12 @@
     <h3>Chat with {{ chat_user.username }}</h3>
     {% for chat in chats %}
     <div class="message-content">
+        <p>{{ chat.first_user.username }}</p>
         <p>{{ chat.message_text }}</p>
+        {% if chat.image %}
         <img width="200" height="200" src="{{ chat.image.url }}" alt="Chat Image" style="border-radius: 10%;">
+        {% endif %}
+
     </div>
     {% endfor %}
 </div>

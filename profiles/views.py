@@ -1,4 +1,3 @@
-from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
@@ -75,7 +74,8 @@ def edit_post(request, username):
 
 
 def news_list(request, username):
+    user_info = UserProfile.objects.all()
     news = BlogUser.objects.all().order_by('-date')
-    return render(request, 'profile/news.html', {'news': news})
+    return render(request, 'profile/news.html', {'news': news, 'user_info': user_info})
 
 

@@ -26,8 +26,11 @@ def dialog(request, username):
         first_user = request.user
         second_user = chat_user
         message_text = request.POST['message_text']
-        image = request.FILES['image']
-        chat = MessageChat(first_user=first_user, second_user=second_user, message_text=message_text, image=image)
+        image = request.FILES.get('image')
+        chat = MessageChat.objects.create(first_user=first_user, second_user=second_user, message_text=message_text)
+        if image:
+            chat.image = image
+            chat.save()
         chat.save()
         return redirect('messages', username=username)
 

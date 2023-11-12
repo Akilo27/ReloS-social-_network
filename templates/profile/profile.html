@@ -43,11 +43,17 @@
 
      {% for b in blog %}
     <div class="text-center">
-        <a href="#">{{ b.user }}</a>
-        <h6>{{ b.title }}</h6>
-        {% if b.image %}
 
-            <img src="{{ b.image.url }}" alt="Post Image" width="200" height="200" style="border-radius: 10%;">
+
+        <a href="#" class=" align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <img src="{{ user_info.image.url }}" alt="Post Image" width="50" height="50" style="border-radius: 50%;">
+            <span class="fs-4">{{ b.user }}</span>
+        </a>
+
+        <h6>{{ b.title }}</h6>
+
+        {% if b.image %}
+            <img src="{{ b.image.url }}" alt="Post Image" width="400" height="400" style="border-radius: 10%;">
         {% endif %}
         <p>likes: {{ b.likes }}</p>
         <p>date - {{ b.date }}</p>
@@ -61,6 +67,7 @@
                 <button type="submit" name="action" value="like" class="btn btn-primary rounded-pill px-3">Like</button>
             {% endif %}
         </form>
+        <br><br>
     </div>
 
 {% endfor %}
