@@ -1,0 +1,14 @@
+  {% extends 'base_profile.html' %}
+
+  {% block title %}messages{% endblock %}
+
+  {% block content %}
+
+        {% for user in user_names %}
+        <div class="message-container">
+            <a href="{% url 'messages' username=user %}">Chat with {{ user}}</a>
+        </div>
+        {% endfor %}
+  {% endblock %}
+
+
