@@ -1,0 +1,36 @@
+{% extends 'base_profile.html' %}
+
+{% block title %}Редактирование профиля{% endblock %}
+
+{% block content %}
+  <h2>Редактирование профиля</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+      <div class="form-floating">
+        <input type="text" class="form-control" id="years" name="years" placeholder="years">
+        <label for="years">years</label>
+      </div>
+
+      <div class="form-floating">
+        <input type="text" class="form-control" id="city" name="city" placeholder="city">
+        <label for="city">city</label>
+      </div>
+
+      <div class="form-floating">
+        <input type="text" class="form-control" id="status" name="status" placeholder="status">
+        <label for="status">status</label>
+      </div>
+
+      <div class="form-floating">
+        <input type="text" class="form-control" id="about_user" name="about_user" placeholder="about_user">
+        <label for="about_user">about user</label>
+      </div>
+
+      <div class="form-floating">
+        <input type="file" class="form-control" id="floatingPhoto" name="photo">
+        <label for="floatingPhoto">photo</label>
+      </div>
+    <button type="submit">Сохранить</button>
+    </div>
+  </form>
+{% endblock %}

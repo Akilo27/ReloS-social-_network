@@ -1,0 +1,67 @@
+  {% extends 'base_profile.html' %}
+
+  {% block title %}{{ user.username}}{% endblock %}
+  {% block content %}
+
+{% load static %}
+
+
+
+<style>
+    .user_information {
+        padding: 20px;
+    }
+
+</style>
+
+
+
+
+
+  <h1>{{ username }}</h1>
+  <div class="d-flex align-items-center p-3 my-3  bg-purple rounded shadow-sm">
+    {% if user_info.image.url %}
+      <div>
+            <img src="{{ user_info.image.url }}" alt="Post Image" width="200" height="200" style="border-radius: 50%;">
+        </div>
+    {% endif %}
+    <div class="user_information">
+        <p> Город - {{ user_info.city }}</p>
+        <p> Лет - {{ user_info.years }}</p>
+        <p> Статус - {{ user_info.status }}</p>
+        <p> Информация обо мне - {{ user_info.about_user }}</p>
+        <p> Друзей - {{ user_info.friends }}</p>
+        <p> Подписчиков - {{ user_info.subscribers }}</p>
+    </div>
+  </div>
+
+
+
+
+
+
+
+     {% for b in blog %}
+    <div class="text-center">
+        <a href="#">{{ b.user }}</a>
+        <h6>{{ b.title }}</h6>
+        {% if b.image %}
+
+            <img src="{{ b.image.url }}" alt="Post Image" width="200" height="200" style="border-radius: 10%;">
+        {% endif %}
+        <p>likes: {{ b.likes }}</p>
+        <p>date - {{ b.date }}</p>
+        <form method="post" action="{% url 'handle_like' username=request.user %}">
+            {{ request.user}}
+            {% csrf_token %}
+            <input type="hidden" name="post_id" value="{{ b.id }}">
+            {% if user in b.liked_users.all %}
+                <button type="submit" name="action" value="unlike" class="btn btn-primary rounded-pill px-3">Unlike</button>
+            {% else %}
+                <button type="submit" name="action" value="like" class="btn btn-primary rounded-pill px-3">Like</button>
+            {% endif %}
+        </form>
+    </div>
+
+{% endfor %}
+  {% endblock %}

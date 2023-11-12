@@ -1,0 +1,26 @@
+  {% extends 'base_profile.html' %}
+
+  {% block title %}messages{% endblock %}
+
+  {% block content %}
+  {% for new in news %}
+    <div class="text-center">
+        <a href="/profile/{{ new.user }}/">{{ new.user }}</a>
+        <h6>{{ new.title }}</h6>
+        {% if new.image %}
+            <img src="{{ new.image.url }}" alt="Post Image" width="200" height="200" style="border-radius: 10%;">
+        {% endif %}
+        <p>likes: {{ new.likes }}</p>
+        <p>date - {{ new.date }}</p>
+        <form method="post" action="{% url 'profile' username=user.username %}">
+            {% csrf_token %}
+            <input type="hidden" name="post_id" value="{{ new.id }}">
+            {% if user in b.liked_users.all %}
+                <button type="submit" name="action" value="unlike" class="btn btn-primary rounded-pill px-3">Unlike</button>
+            {% else %}
+                <button type="submit" name="action" value="like" class="btn btn-primary rounded-pill px-3">Like</button>
+            {% endif %}
+        </form>
+    </div>
+  {% endfor %}
+  {% endblock %}

@@ -1,9 +1,25 @@
-  {% extends 'base.html' %}
+{% extends 'base_profile.html' %}
 
-  {% block title %}messages{% endblock %}
+{% block title %}Messages{% endblock %}
 
-  {% block content %}
-  {% for message in messages %}
-    <a href="/message/" class="btn btn-primary rounded-pill px-3">{{ message.first_user.username }}</a>
-  {% endfor %}
-  {% endblock %}
+{% block content %}
+<a href="{% url 'chats' username=user %}" class="btn btn-primary rounded-pill px-3">Назад</a>
+<div class="message-container">
+    <h3>Chat with {{ chat_user.username }}</h3>
+    {% for chat in chats %}
+    <div class="message-content">
+        <p>{{ chat.message_text }}</p>
+        <img width="200" height="200" src="{{ chat.image.url }}" alt="Chat Image" style="border-radius: 10%;">
+    </div>
+    {% endfor %}
+</div>
+
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <input type="text" name="message_text">
+    <input type="file" name="image" id="image">
+    <button type="submit">Отправить</button>
+</form>
+{% endblock %}
+

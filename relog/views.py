@@ -1,6 +1,5 @@
-from django.db.models import Q
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import authenticate, login as auth_login, logout
 
 from django.contrib.auth.models import User
 from .models import Menu
@@ -40,3 +39,8 @@ def login(request):
         else:
             message = "Нет такого пользователя, просмотрите правильность написания имени и пароля"
     return render(request, 'relog/login.html', {'message': message, 'menus': menus})
+
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')

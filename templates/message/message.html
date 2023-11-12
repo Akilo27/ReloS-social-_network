@@ -1,9 +1,0 @@
-  {% extends 'base.html' %}
-
-  {% block title %}messages{% endblock %}
-
-  {% block content %}
-  {% for message in messages %}
-    <a href="/message/" class="btn btn-primary rounded-pill px-3">{{ message.first_user.username }}</a>
-  {% endfor %}
-  {% endblock %}
