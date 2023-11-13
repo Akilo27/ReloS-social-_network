@@ -5,11 +5,11 @@ from django.shortcuts import redirect
 
 class UserProfile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='images/')
+    image = models.ImageField(upload_to='images/', blank=True, null=True)
     years = models.IntegerField(default=18)
-    city = models.CharField(max_length=100, default='')
-    status = models.CharField(max_length=100, default='')
-    about_user = models.TextField(default='')
+    city = models.CharField(max_length=100, default='Не указано')
+    status = models.CharField(max_length=100, default='Не указано')
+    about_user = models.TextField(default='Не указано')
 
     friends = models.ManyToManyField(User, related_name='friends', blank=True)
     subscribers = models.ManyToManyField(User, related_name='subscribers', blank=True)
