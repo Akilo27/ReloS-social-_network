@@ -2,6 +2,15 @@
 
 {% block title %}Редактирование профиля{% endblock %}
 
+<style>
+  edit {
+  margin-right: 100px;
+}
+
+
+</style>
+
+
 {% block content %}
   <h2>Редактирование профиля</h2>
   <form method="post" enctype="multipart/form-data">
@@ -31,6 +40,6 @@
         <label for="floatingPhoto">photo</label>
       </div>
     <button type="submit">Сохранить</button>
-    </div>
   </form>
+
 {% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base_profile.html' %}
+
+{% block content %}
+    <div>
+        <a class='btn btn-primary' href="{% url 'profiles:subscribers' username=username %}">Подписчиков- {{ user_info.subscribers.count }}</a>
+        <a class='btn btn-primary' href="{% url 'profiles:subscriptions' username=username %}">Подписок - {{ user_info.subscriptions.count }}</a>
+    </div>
+<br>
+
+   {% for friend in friends %}
+    <a href="/{{ friend.username }}/" class=" align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <img src="{{ user_info.image.url }}" alt="Post Image" width="50" height="50" style="border-radius: 50%;">
+        <span class="fs-4">{{ friend.username }}</span>
+    </a>
+    <a href="/profile/{{ friend.username}}/remove_friend/">Удалить из друзей</a>
+   {% empty %}
+       <p>No friends found.</p>
+   {% endfor %}
+
+{% endblock %}

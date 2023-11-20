@@ -1,0 +1,27 @@
+{% extends 'base_profile.html' %}
+
+{% block title %}Редактирование профиля{% endblock %}
+
+{% block content %}
+<a class='btn btn-primary' href="{% url 'profiles:friends' username=username %}">Друзья</a>
+
+<br><br>
+
+{% for subscription in subscriptions %}
+    {% for user in all_user_info %}
+
+        {% if user.user.username == subscription.username %}
+            <a href="/profile/{{ subscription.username }}/" class=" align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                <img src="{{ user.image.url }}" alt="Post Image" width="50" height="50" style="border-radius: 50%;">
+                <span class="fs-4">{{ subscription.username }}</span>
+            </a>
+
+
+        {% endif %}
+    {% endfor %}
+
+{% empty %}
+    <p>No subscriptions found.</p>
+{% endfor %}
+
+{% endblock %}

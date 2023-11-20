@@ -1,0 +1,21 @@
+{% extends 'base_profile.html' %}
+
+{% block title %}Редактирование профиля{% endblock %}
+
+
+{% block content %}
+<a class='btn btn-primary' href="{% url 'profiles:friends' username=username %}">Друзья</a>
+<br>
+
+{% for subscriber in subscribers %}
+    <a href="/profile/{{ subscriber.username }}/" class=" align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <img src="{{ user_info.image.url }}" alt="Post Image" width="50" height="50" style="border-radius: 50%;">
+        <span class="fs-4">{{ subscriber.username }}</span>
+    </a>
+    <a href="/profile/{{ subscriber.username}}/add_friend/">Добавить в друзья</a>
+
+{% empty %}
+    <p>No subscribers found.</p>
+{% endfor %}
+
+{% endblock %}

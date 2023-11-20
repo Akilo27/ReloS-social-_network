@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'relog',
     'profiles',
     'mechat',
+    'music',
 ]
 
 MIDDLEWARE = [

@@ -1,14 +1,39 @@
   {% extends 'base_profile.html' %}
 
-  {% block title %}messages{% endblock %}
+  {% block title %}чат{% endblock %}
 
   {% block content %}
 
+  <style>
+    /* Стили для сообщений */
+    .message-container {
+        background-color: #f5f5f5;
+        padding: 10px;
+        border: 1px solid #dddddd;
+        margin-bottom: 10px;
+    }
+
+    .chat-link {
+        color: #007bff;
+        text-decoration: none;
+    }
+</style>
+
         {% for user in user_names %}
         <div class="message-container">
-            <a href="{% url 'messages' username=user %}">Chat with {{ user}}</a>
+            <div class="row">
+                {% for username in user_info %}
+                    {% if username.user.username == user %}
+                        <a href="{% url 'messages' username=user %}" class="align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                            <img src="{{ username.image.url }}" alt="Post Image" width="50" height="50" style="border-radius: 50%;">
+                            <span class="fs-4">{{ user}}</span>
+                        </a>
+                    {% endif %}
+                {% endfor %}
+            </div>
         </div>
         {% endfor %}
+
   {% endblock %}
 
 

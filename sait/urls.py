@@ -22,6 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('profile/', include('profiles.urls')),
     path('messages/', include('mechat.urls')),
+    path('music/', include('music.urls')),
     path('', include('relog.urls')),
 
 

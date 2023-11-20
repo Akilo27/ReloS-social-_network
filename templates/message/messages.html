@@ -1,22 +1,30 @@
 {% extends 'base_profile.html' %}
 
-{% block title %}Messages{% endblock %}
+{% block title %}Диалог{% endblock %}
 
 {% block content %}
-<a href="{% url 'chats' username=user %}" class="btn btn-primary rounded-pill px-3">Назад</a>
-<div class="message-container">
-    <h3>Chat with {{ chat_user.username }}</h3>
-    {% for chat in chats %}
-    <div class="message-content">
-        <p>{{ chat.first_user.username }}</p>
-        <p>{{ chat.message_text }}</p>
-        {% if chat.image %}
-        <img width="200" height="200" src="{{ chat.image.url }}" alt="Chat Image" style="border-radius: 10%;">
-        {% endif %}
 
+<a href="{% url 'chats' username=user %}" class="btn btn-primary rounded-pill px-3">Назад</a>
+<h3><a href="/profile/{{ chat_user.username }}/">Chat with {{ chat_user.username }}</a> </h3>
+
+
+
+
+{% for chat in chats %}
+    <div class="message-container">
+        <div class="row">
+            {% for username in user_info %}
+                {% if username.user.username == chat.first_user.username %}
+                    <a href="/profile/{{ username }}/" class="align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                        <img src="{{ username.image.url }}" alt="Post Image" width="50" height="50" style="border-radius: 50%;">
+                        <span class="fs-4">{{ chat.first_user }}</span>
+                    </a>
+                    <p>{{ chat.message_text }}</p>
+                {% endif %}
+            {% endfor %}
+        </div>
     </div>
-    {% endfor %}
-</div>
+{% endfor %}
 
 
 <form method="post" enctype="multipart/form-data">
@@ -25,5 +33,6 @@
     <input type="file" name="image" id="image">
     <button type="submit">Отправить</button>
 </form>
+</div>
 {% endblock %}
 

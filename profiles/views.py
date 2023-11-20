@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
-from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.http import HttpResponse, JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from .models import UserProfile, BlogUser
 
@@ -9,19 +9,43 @@ from .models import UserProfile, BlogUser
 def profile(request, username):
     user_info = UserProfile.objects.get(user__username=username)
     current_user = request.user
-
+    is_subscribed = user_info.subscribers.filter(id=current_user.id).exists()
     is_current_user = current_user.username == username
-
     is_admin = current_user.is_superuser
 
-    if is_current_user or is_admin:
-        blog = BlogUser.objects.filter(user__username=username).order_by('-date')
+    blog = BlogUser.objects.filter(user__username=username).order_by('-date')
+    return render(request, 'profile/profile.html', {'username': username,
+                                                    'user': current_user,
+                                                    'user_info': user_info,
+                                                    'blog': blog,
+                                                    'is_subscribed': is_subscribed})
 
-        return render(request, 'profile/profile.html', { 'username': username,'user': current_user, 'user_info': user_info, 'blog': blog})
 
-    else:
-        # пользователь не имеет доступа к информации о запрашиваемом пользователе
-        return HttpResponse("Access Denied")
+@login_required
+def subscribe(request, username):
+    if request.method == 'POST':
+        user_info = UserProfile.objects.get(user__username=username)
+        current_user = request.user
+        current_user_info = UserProfile.objects.get(user__username=request.user.username)
+        print(user_info, current_user_info, current_user)
+
+        user_info.subscribers.add(current_user)
+        current_user_info.subscriptions.add(user_info.user)
+
+        return redirect(request.META['HTTP_REFERER'])
+
+
+@login_required
+def unsubscribe(request, username):
+    if request.method == 'POST':
+        user_info = UserProfile.objects.get(user__username=username)
+        current_user = request.user
+        current_user_info = UserProfile.objects.get(user__username=request.user.username)
+
+        user_info.subscribers.remove(current_user)
+        current_user_info.subscriptions.remove(user_info.user)
+
+        return redirect(request.META['HTTP_REFERER'])
 
 
 def handle_like_view(request, username):
@@ -30,7 +54,7 @@ def handle_like_view(request, username):
         action = request.POST['action']
         user = User.objects.get(username=username)
         BlogUser.handle_like(request, post_id, action, user, username)
-    return redirect('profile', username=username)
+    return redirect('profiles:profile', username=username)
 
 
 def edit_profile(request, username):
@@ -76,6 +100,66 @@ def edit_post(request, username):
 def news_list(request, username):
     user_info = UserProfile.objects.all()
     news = BlogUser.objects.all().order_by('-date')
-    return render(request, 'profile/news.html', {'news': news, 'user_info': user_info})
+    return render(request, 'profile/news.html', {'news': news,
+                                                 'user_info': user_info})
 
 
+@login_required
+def friends(request, username):
+    all_user_info = UserProfile.objects.all()
+    user_info = UserProfile.objects.get(user__username=username)
+    friends = user_info.friends.all()
+    return render(request, 'profile/friends/friends.html', {'username': username,
+                                                            'friends': friends,
+                                                            'user_info': user_info,
+                                                            'all_user_info': all_user_info})
+
+
+@login_required
+def subscribers(request, username):
+    all_user_info = UserProfile.objects.all()
+    user_info = UserProfile.objects.get(user__username=username)
+    subscribers = user_info.subscribers.all()
+    return render(request, 'profile/friends/subscribers.html', {'username': username,
+                                                                'subscribers': subscribers,
+                                                                'user_info': user_info,
+                                                                'all_user_info': all_user_info})
+
+
+@login_required
+def subscriptions(request, username):
+    all_user_info = UserProfile.objects.all()
+    user_info = UserProfile.objects.get(user__username=username)
+    subscriptions = user_info.subscriptions.all()
+    return render(request, 'profile/friends/subscriptions.html', {'username': username,
+                                                                  'subscriptions': subscriptions,
+                                                                  'user_info': user_info,
+                                                                  'all_user_info': all_user_info})
+
+@login_required
+def add_friend(request, username):
+    user_info = UserProfile.objects.get(user__username=username)
+    current_user = request.user
+    current_user_info = UserProfile.objects.get(user__username=current_user.username)
+
+    user_info.friends.add(current_user)
+    current_user_info.friends.add(user_info.user)
+
+    user_info.subscribers.remove(current_user)
+    current_user_info.subscriptions.remove(user_info.user)
+
+    return redirect(request.META['HTTP_REFERER'])
+
+def remove_friend(request, username):
+
+    user_info = UserProfile.objects.get(user__username=username)
+    current_user = request.user
+    current_user_info = UserProfile.objects.get(user__username=current_user.username)
+
+    user_info.friends.remove(current_user)
+    current_user_info.friends.remove(user_info.user)
+
+    user_info.subscribers.add(current_user)
+    current_user_info.subscriptions.add(user_info.user)
+
+    return redirect(request.META['HTTP_REFERER'])

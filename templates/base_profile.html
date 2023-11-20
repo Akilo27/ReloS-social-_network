@@ -7,27 +7,23 @@
     <link rel="icon" href="/media/images/icon.png">
 </head>
 <body>
-    <div class="container">
-    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-      <style>
+
+<style>
   .sidebar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100vh;
-    width: 280px;
-    background-color: #999999;
-  }
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 280px;
+      background-color: #999999;
+      display: flex;
+      flex-direction: column;
+    }
 
-  .sidebar ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-
-  .sidebar li {
-    padding: 10px;
-  }
+  .sidebar ul li {
+  padding: 10px;
+  text-align: center;
+    }
 
   .sidebar a {
     color: #fff;
@@ -38,44 +34,127 @@
     background-color: #737373;
   }
 
-  .main-content {
-
-    margin-left: 280px; /* Устанавливаем отступ слева равный ширине боковой панели */
-    padding: 20px; /* Добавляем отступы для контента */
+  .sidebar .logout {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
   }
+
+
+    .sidebar2 {
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100vh;
+      width: 280px;
+      background-color: #999999;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar2 ul li {
+      padding: 10px;
+      text-align: center;
+    }
+
+    .sidebar2 a {
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .sidebar2 .active {
+      background-color: #737373;
+    }
+
+    .sidebar2 .logout {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+    }
+
+  .main-content {
+    margin-left: 280px;
+    margin-right: 280px;
+    padding: 20px;
+  }
+  .d-flex.align-items-center.p-3.my-3.bg-purple.rounded.shadow-sm {
+    justify-content: center;
+  }
+  .blog {
+ margin-left: 220px;
+ }
+  .music-menu {
+        margin-left: 280px;
+        margin-right: 280px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 70px;
+        width: 100%;
+        background-color: #333333;
+        color: #ffffff;
+        /* Другие стили вашего меню */
+    }
+
 </style>
 
 
-<div class="sidebar">
-    <div class="d-flex align-items-center p-3 my-3  bg-purple rounded shadow-sm">
-        <img class="mb-4" src="/media/images/icon.png" alt="" width="100" height="100">
-    </div>
-  <ul>
-    <li class="active"><a href="{% url 'profile' username=user.username %}">Моя страница</a></li>
-    <li><a href="{% url 'edit_profile' username=user.username %}">Редактировать профиль</a></li>
-    <li><a href="{% url 'edit_post' username=user.username %}">Создать пост</a></li>
-    <li><a href="/messages/{{request.user}}/">Чат</a></li>
-    <li><a href="{% url 'news' username=user.username %}">Новости</a></li>
-    <li><a href="/logout/">Выйти</a></li>
+<div class="container">
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
 
-  </ul>
-</div>
+    <div class="row">
 
-    </header>
+        <div class="music-menu">
+            <ul>
+                <li><a href="{% url 'muscic:song_list' %}">музыка</a></li>
+                <li><a href="#">Песня 2</a></li>
+                <li><a href="#">Песня 3</a></li>
+            </ul>
+        </div>
 
-    </div>
-
-    <main>
-      <div class="main-content">
-        {% block content %}
-
-        {% endblock %}
+    <div class="sidebar">
+      <div class="d-flex align-items-center p-3 my-3 bg-purple rounded shadow-sm">
+        <img src="/media/images/icon.png" alt="" width="100" height="100">
       </div>
-    </main>
 
-    <footer class="pt-5 my-5 text-body-secondary border-top">
-    Created by the Akilo · © 2023
-  </footer>
+      <div class="d-flex align-items-center p-3 my-3 bg-purple rounded shadow-sm">
+      <ul>
+        <li class="active"><a href="{% url 'profiles:profile' username=user.username %}">Моя страница</a></li>
+        <li><a href="/messages/{{request.user}}/">Чат</a></li>
+        <li><a href="{% url 'profiles:news' username=user.username %}">Новости</a></li>
+      </ul>
+      </div>
+      <a class="logout" href="/logout/">Выйти</a>
+
+    </div>
+
+
+      <div class="sidebar2">
+      <div class="d-flex align-items-center p-3 my-3 bg-purple rounded shadow-sm">
+        <ul>
+        <li><a href="{% url 'profiles:edit_profile' username=user.username %}">Редактировать профиль</a></li>
+        <li><a href="{% url 'profiles:edit_post' username=user.username %}">Создать пост</a></li>
+      </ul>
+      </div>
+      </div>
+
+    </div>
+
+        </header>
+
+        </div>
+
+        <main>
+          <div class="main-content">
+            {% block content %}
+
+            {% endblock %}
+          </div>
+        </main>
+
+        <footer class="pt-5 my-5 text-body-secondary border-top">
+        Created by the Akilo · © 2023
+      </footer>
 
 
 </body>
