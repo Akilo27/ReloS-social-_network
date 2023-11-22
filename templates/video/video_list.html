@@ -1,0 +1,78 @@
+{% extends 'base_profile.html' %}
+
+{% block content %}
+
+<a class='btn btn-primary' href="{% url 'video:video_add' %}">добавить видео</a>
+
+<style>
+
+    video {
+      position: relative;
+    width: 400px;
+    height: 200px;
+    margin: 0 auto;
+    }
+
+
+    .video-wrapper {
+    position: relative;
+    width: 50%;
+    height: 50%;
+    margin: 0 auto;
+    }
+
+    .video-title {
+        font-size: 14px;
+        text-align: center;
+        margin-top: 8px;
+    }
+    .video-description {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: #fff;
+        padding: 8px;
+        font-size: 12px;
+    }
+
+        .full-screen {
+        width: 100%;
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 9999;
+        background-color: #000000;
+    }
+
+    .full-screen video {
+        width: 50%;
+        height: 50%;
+    }
+</style>
+
+{% for video in videos %}
+    <div class="video-wrapper">
+        <h2 class="video-title">{{ video.title }}</h2>
+        <video src="{{ video.video_file.url }}" controls onclick="toggleFullScreen(this)" onended="exitFullScreen(this)"></video>
+        <br><br><br>
+        <div class="video-description">{{ video.description }}</div>
+    </div>
+    <a href="{% url 'video:add_user_video' i=video.id %}">Добавить в мои видео</a>
+{% empty %}
+    <p>No videos available.</p>
+{% endfor %}
+
+<script>
+    function toggleFullScreen(video) {
+        video.classList.toggle("full-screen");
+    }
+
+    function exitFullScreen(video) {
+        video.classList.remove("full-screen");
+    }
+</script>
+
+{% endblock %}

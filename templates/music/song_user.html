@@ -1,0 +1,41 @@
+{% extends 'base_profile.html' %}
+
+{% block content %}
+
+<style>
+    .music {
+     margin-left: 220px;
+     padding: 50px;
+    }
+</style>
+    <div class="music">
+{% for song in user_info.song.all %}
+        <li>{{ song.title }} - {{ song.artist }}</li>
+    <audio class='song-player' id="player" controls src="{{ song.audio_file.url }}"></audio>
+    <form method="POST" action="{% url 'music:delete_user_song' i=song.id %}">
+        {% csrf_token %}
+        <input type="submit" value="Delete">
+    </form>
+{% endfor %}
+    </div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const audioElements = document.querySelectorAll('.song-player');
+
+  audioElements.forEach((audio) => {
+    audio.addEventListener('play', (event) => {
+      audioElements.forEach((otherAudio) => {
+        if (otherAudio !== audio) {
+          otherAudio.pause();
+          otherAudio.currentTime = 0; // Reset the current time to start from the beginning
+        }
+      });
+    });
+  });
+});
+</script>
+
+
+{% endblock %}

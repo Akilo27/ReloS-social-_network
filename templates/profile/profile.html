@@ -29,7 +29,7 @@
     <h6> Статус - {{ user_info.status }}</h6>
     <h6> Информация обо мне - {{ user_info.about_user }}</h6>
     <h6> <a href="{% url 'profiles:friends' username=username %} ">Друзей</a> - {{ user_info.friends.count }}</h6>
-
+    <h3><a href="{% url 'messages' username=user_info.user.username %}" >Написать</a> </h3>
 
     {% if not is_current_user %}
         {% if is_subscribed %}

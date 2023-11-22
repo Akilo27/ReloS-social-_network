@@ -31,6 +31,8 @@ INSTALLED_APPS = [
     'profiles',
     'mechat',
     'music',
+    'video',
+    'communitys',
 ]
 
 MIDDLEWARE = [
@@ -93,6 +95,13 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.filebased.FileBasedCache",
+        "LOCATION": "unique-snowflake",
+    }
+}
 
 
 # Internationalization

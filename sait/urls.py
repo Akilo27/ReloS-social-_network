@@ -23,6 +23,8 @@ urlpatterns = [
     path('profile/', include('profiles.urls')),
     path('messages/', include('mechat.urls')),
     path('music/', include('music.urls')),
+    path('video/', include('video.urls')),
+    path('communities/', include('communitys.urls')),
     path('', include('relog.urls')),
 
 

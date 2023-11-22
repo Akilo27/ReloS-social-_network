@@ -1,0 +1,21 @@
+{% extends 'base_profile.html' %}
+
+{% block content %}
+
+
+<a href="{% url 'community:create_community' %}">Создать сообщество</a>
+
+
+{% for community in communities %}
+    <h2>{{ community.name }}</h2>
+    <p>{{ community.description }}</p>
+    <ul>
+        <a href="{% url 'community:edit_community' community_id=community.id %}">Редактировать сообщество</a>
+    {% for member in community.members.all %}
+        <li>{{ member.username }}</li>
+    {% endfor %}
+    </ul>
+{% endfor %}
+
+
+{% endblock %}
