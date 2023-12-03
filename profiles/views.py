@@ -53,7 +53,7 @@ def handle_like_view(request, username):
         action = request.POST['action']
         user = User.objects.get(username=username)
         BlogUser.handle_like(request, post_id, action, user, username)
-    return redirect('profiles:profile', username=username)
+    return redirect(request.META['HTTP_REFERER'])
 
 
 def edit_profile(request, username):

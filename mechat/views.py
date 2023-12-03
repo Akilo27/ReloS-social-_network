@@ -37,3 +37,5 @@ def dialog(request, username):
         return redirect('messages', username=username)
 
     return render(request, 'message/messages.html', {'chats': chats, 'chat_user': chat_user, 'user_info': user_info})
+
+

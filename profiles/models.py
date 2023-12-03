@@ -38,7 +38,7 @@ class BlogUser(models.Model):
             post.liked_users.remove(user)
         post.save()
 
-        return redirect('profile',username=username)
+        return redirect('profiles:profile', username=username)
 
     def __str__(self):
         return self.user.username
