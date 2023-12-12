@@ -5,16 +5,11 @@
 
 <a href="{% url 'community:create_community' %}">Создать сообщество</a>
 
-
+<br><br>
 {% for community in communities %}
-    <h2>{{ community.name }}</h2>
-    <p>{{ community.description }}</p>
-    <ul>
-        <a href="{% url 'community:edit_community' community_id=community.id %}">Редактировать сообщество</a>
-    {% for member in community.members.all %}
-        <li>{{ member.username }}</li>
-    {% endfor %}
-    </ul>
+    <a href="{{ community.name }}/">{{ community.name }}</a>
+
+    <h6>создатель - {{ community.creator }}</h6>
 {% endfor %}
 
 

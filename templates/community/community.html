@@ -1,0 +1,53 @@
+{% extends 'base_profile.html' %}
+
+{% block content %}
+
+<h1>{{ profile_community.community }}</h1>
+<div class="d-flex  p-3 my-3  bg-purple rounded shadow-sm">
+    {% if profile_community.image %}
+      <div>
+        <img src="{{ profile_community.image.url }}" alt="Post Image" width="200" height="200" style="border-radius: 50%;">
+      </div>
+    {% endif %}
+    <div class="user_information">
+        <h6> Статус - {{ profile_community.status }}</h6>
+        <h6> Информация обо мне - {{ profile_community.about_community }}</h6>
+    </div>
+    </div>
+    {% if community.creator == request.user %}
+        <a href="{% url 'community:edit_community' community_id=community.id %}">Редактировать сообщество</a>
+        <a href="{% url 'community:create_blog'  community_id=community.id %}">Создать пост</a>
+    {% endif %}
+
+
+{% for b in blog_community %}
+<div class="blog">
+
+
+    <a href="#" class=" align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+        <img src="{{ profile_community.image.url }}" alt="Post Image" width="50" height="50" style="border-radius: 50%;">
+        <span class="fs-4">{{ b.community }}</span>
+    </a>
+
+    <h6>{{ b.title }}</h6>
+
+    {% if b.image %}
+        <img src="{{ b.image.url }}" alt="Post Image" width="400" height="400" style="border-radius: 10%;">
+    {% endif %}
+    <p>likes: {{ b.likes }}</p>
+    <p>date - {{ b.date }}</p>
+    <form method="post" action="{% url 'community:handle_like' username=b.community %}">
+
+        {% csrf_token %}
+        <input type="hidden" name="post_id" value="{{ b.id }}">
+        {% if user in b.liked_users.all %}
+            <button type="submit" name="action" value="unlike" class="btn btn-primary rounded-pill px-3">Unlike</button>
+        {% else %}
+            <button type="submit" name="action" value="like" class="btn btn-primary rounded-pill px-3">Like</button>
+        {% endif %}
+    </form>
+    <br><br>
+</div>
+{% endfor %}
+
+{% endblock %}
