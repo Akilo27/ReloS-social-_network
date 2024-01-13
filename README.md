@@ -1,6 +1,4 @@
-![icon](https://github.com/Akilo27/ReloS-social-_network/assets/103588099/1aba2586-c7ab-40a4-8200-78f911f35477)# ReloS
-
-![ReloS logo](logo.png)
+![icon](https://github.com/Akilo27/ReloS-social-_network/assets/103588099/1aba2586-c7ab-40a4-8200-78f911f35477)
 
 ReloS is a social networking platform that allows users to network, connect, and communicate with each other. This document provides an overview of the project, installation steps, usage guide, and contribution details.
 
