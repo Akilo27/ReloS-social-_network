@@ -3,34 +3,98 @@
   {% block title %}Новости{% endblock %}
 
   {% block content %}
-  {% for new in news %}
-    <div class="blog">
-        {% for user in user_info %}
-            {% if user.user == new.user %}
-                <a href="/profile/{{ new.user }}/" class="align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-                    <img src="{{ user.image.url }}" alt="Post Image" width="50" height="50" style="border-radius: 50%;">
-                    <span class="fs-4">{{ new.user }}</span>
-                </a>
-            {% endif %}
-        {% endfor %}
 
-        <h6>{{ new.title }}</h6>
 
-        {% if new.image %}
-            <img src="{{ new.image.url }}" alt="Post Image" width="400" height="400" style="border-radius: 10%;">
-        {% endif %}
-        <p>likes: {{ new.likes }}</p>
-        <p>date - {{ new.date }}</p>
-        <form method="post" action="{% url 'profiles:handle_like' username=new.user.username %}">
-
-        {% csrf_token %}
-        <input type="hidden" name="post_id" value="{{ new.id }}">
-        {% if user in new.liked_users.all %}
-            <button type="submit" name="action" value="unlike" class="btn btn-primary rounded-pill px-3">Unlike</button>
+    <div>
+    <button class="btn btn-primary" onclick="location.href='{% url 'profiles:handle_toggle' username=request.user.username %}'">
+        {% if request.session.news_toggle == 'user' %}
+            Блог сообществ
         {% else %}
-            <button type="submit" name="action" value="like" class="btn btn-primary rounded-pill px-3">Like</button>
+            Блог пользователей
         {% endif %}
-        </form>
+    </button>
     </div>
-  {% endfor %}
+
+
+
+{% if request.session.news_toggle == 'user' %}
+      {% for new in news %}
+        <div class="blog" id="post-{{ new.id }}">
+            {% for user_info_item in user_info %}
+                {% if user_info_item.user == new.user %}
+                    <a href="/profile/{{ new.user }}/" class="align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                        <img src="{{ user_info_item.image.url }}" alt="Post Image" width="50" height="50" style="border-radius: 50%;">
+                        <span class="fs-4">{{ new.user }}</span>
+                    </a>
+                {% endif %}
+            {% endfor %}
+
+            <h6>{{ new.title }}</h6>
+
+            {% if new.image %}
+                <img src="{{ new.image.url }}" alt="Post Image" width="400" height="400" style="border-radius: 10%;">
+            {% endif %}
+            <p>likes: {{ new.likes }}</p>
+            <p>date - {{ new.date }}</p>
+
+            <form method="post" action="{% url 'profiles:handle_like' username=request.user.username %}">
+                {% csrf_token %}
+                <input type="hidden" name="post_id" value="{{ new.id }}">
+                {% if request.user in new.liked_users.all %}
+                    <button type="submit" name="action" value="unlike" class="btn btn-primary rounded-pill px-3">Unlike</button>
+                {% else %}
+                    <button type="submit" name="action" value="like" class="btn btn-primary rounded-pill px-3">Like</button>
+                {% endif %}
+            </form>
+        </div>
+
+
+  <br><br>
+      {% endfor %}
+
+
+
+
+
+
+
+  {% else %}
+    {% for new in news_community %}
+        <div class="blog" id="post-{{ new.id }}">
+            {% for user in user_info %}
+                {% if user.user == new.user %}
+                    <a href="/profile/{{ new.user }}/" class="align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                        <img src="{{ user.image.url }}" alt="Post Image" width="50" height="50" style="border-radius: 50%;">
+                        <span class="fs-4">{{ new.user }}</span>
+                    </a>
+                {% endif %}
+            {% endfor %}
+
+            <h6>{{ new.title }}</h6>
+
+            {% if new.image %}
+                <img src="{{ new.image.url }}" alt="Post Image" width="400" height="400" style="border-radius: 10%;">
+            {% endif %}
+            <p>likes: {{ new.likes }}</p>
+            <p>date - {{ new.date }}</p>
+                <form method="post" action="{% url 'community:handle_like' username=new.community.name %}">
+
+                {% csrf_token %}
+                <input type="hidden" name="post_id" value="{{ new.id }}">
+                {% if user in new.liked_users.all %}
+                    <button type="submit" name="action" value="unlike" class="btn btn-primary rounded-pill px-3">Unlike</button>
+                {% else %}
+                    <button type="submit" name="action" value="like" class="btn btn-primary rounded-pill px-3">Like</button>
+                {% endif %}
+                </form>
+            </div>
+
+
+
+
+    {% endfor %}
+{% endif %}
+
+
+
   {% endblock %}

@@ -7,7 +7,7 @@
 
     video {
       position: relative;
-    width: 200px;
+    width: 400px;
     height: 200px;
     margin: 0 auto;
     }
@@ -55,13 +55,14 @@
 
 
 
-
 {% for video in user_info.video.all %}
-    <video src="{{ video.video_file.url }}" controls onclick="toggleFullScreen(this)" onended="exitFullScreen(this)"></video>
-    <form method="POST" action="{% url 'video:delete_user_video' i=video.id %}">
-        {% csrf_token %}
-        <input type="submit" value="Delete">
-    </form>
+    <div class="video-wrapper">
+        <video src="{{ video.video_file.url }}" controls onclick="toggleFullScreen(this)" onended="exitFullScreen(this)"></video>
+        <form method="POST" action="{% url 'video:delete_user_video' i=video.id %}">
+            {% csrf_token %}
+            <input type="submit" value="Delete">
+        </form>
+    </div>
 {% endfor %}
 
 

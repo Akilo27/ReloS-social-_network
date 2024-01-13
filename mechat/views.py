@@ -22,7 +22,7 @@ def dialog(request, username):
     chat_user = get_object_or_404(User, username=username)
     user_info = UserProfile.objects.all()
     chats = MessageChat.objects.filter(first_user=request.user, second_user=chat_user) | MessageChat.objects.filter(
-        second_user=request.user, first_user=chat_user)
+        second_user=request.user, first_user=chat_user).order_by('date')
 
     if request.method == 'POST':
         first_user = request.user

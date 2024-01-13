@@ -29,10 +29,12 @@
     <h6> Статус - {{ user_info.status }}</h6>
     <h6> Информация обо мне - {{ user_info.about_user }}</h6>
     <h6> <a href="{% url 'profiles:friends' username=username %} ">Друзей</a> - {{ user_info.friends.count }}</h6>
-    <h3><a href="{% url 'messages' username=user_info.user.username %}" >Написать</a> </h3>
 
-    {% if not is_current_user %}
+
+    {% if user != user_info.user %}
         {% if is_subscribed %}
+            <h3><a href="{% url 'messages' username=user_info.user.username %}" >Написать</a> </h3>
+
             <form method="post" action="{% url 'profiles:unsubscribe' username=username %}">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-primary" data-username="{{ username }}">Отписаться</button>
@@ -57,7 +59,7 @@
 
 
 {% for b in blog %}
-<div class="blog">
+<div class="blog" id="post-{{ b.id }}">
 
 
     <a href="#" class=" align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
@@ -82,8 +84,55 @@
             <button type="submit" name="action" value="like" class="btn btn-primary rounded-pill px-3">Like</button>
         {% endif %}
     </form>
+
+    {% if user == b.user %}
+        <form method="post" action="{% url 'profiles:delete_blog' blog_id=b.id %}" id="delete-form">
+            {% csrf_token %}
+            <button type="button" class="btn btn-danger rounded-pill px-3" onclick="showConfirmModal()">Delete</button>
+        </form>
+    {% endif %}
+
+    <!-- Модальное окно подтверждения -->
+    <div class="modal fade" id="confirm-modal" tabindex="-1" role="dialog" aria-labelledby="confirm-modal-label" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="confirm-modal-label">Confirmation</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            Are you sure you want to delete this blog post?
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+            <button type="button" class="btn btn-danger" onclick="deleteBlog()">Yes</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <br><br>
 </div>
 
+
+<script>
+    function showConfirmModal() {
+        $('#confirm-modal').modal('show');
+    }
+
+    function deleteBlog() {
+        $('#delete-form').submit();
+    }
+</script>
+
+
+
 {% endfor %}
+
+
+
+
   {% endblock %}

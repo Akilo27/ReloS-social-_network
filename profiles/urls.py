@@ -18,9 +18,12 @@ urlpatterns = [
 
     path('<str:username>/edit/', views.edit_profile, name='edit_profile'),
     path('<str:username>/edit_post/', views.edit_post, name='edit_post'),
+    path('delete-blog/<int:blog_id>/', views.delete_blog, name='delete_blog'),
+
 
     path('<str:username>/news/', views.news_list, name='news'),
     path('<str:username>/like/', views.handle_like_view, name='handle_like'),
+    path('<str:username>/handle_toggle',views.handle_toggle, name='handle_toggle'),
 
     path('<str:username>/subscribe/', views.subscribe, name='subscribe'),
     path('<str:username>/unsubscribe/', views.unsubscribe, name='unsubscribe'),

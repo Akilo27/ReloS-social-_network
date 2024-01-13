@@ -16,10 +16,11 @@
     </div>
     {% if community.creator == request.user %}
         <a href="{% url 'community:edit_community' community_id=community.id %}">Редактировать сообщество</a>
+    <br>
         <a href="{% url 'community:create_blog'  community_id=community.id %}">Создать пост</a>
     {% endif %}
 
-
+<br>
 {% for b in blog_community %}
 <div class="blog">
 

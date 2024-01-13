@@ -10,18 +10,21 @@
 
     }
 </style>
+
+
 <a class='btn btn-primary' href="{% url 'music:song_upload' %}">Загрузить свою песню</a>
     <div class="music">
-  <ul>
-  {% for song in songs %}
-      <li>{{ song.title }} - {{ song.artist }}</li>
-      <audio class='song-player' id="player" controls src="{{ song.audio_file.url }}"></audio>
-    <a href="{% url 'music:add_user_song' i=song.id %}">Добавить</a>
-      <br>
-  {% endfor %}
-  </ul>
+          <ul>
+          {% for song in songs %}
+              <li>{{ song.title }} - {{ song.artist }}</li>
+              <audio class='song-player' id="player" controls src="{{ song.audio_file.url }}"></audio>
+            <a href="{% url 'music:add_user_song' i=song.id %}">Добавить</a>
+              <br>
+          {% endfor %}
+          </ul>
 
 </div>
+
 <script>
 const audioElements = document.querySelectorAll('.song-player');
 

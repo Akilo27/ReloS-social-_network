@@ -3,14 +3,43 @@
 {% block content %}
 
 
+<style>
+    /* Стили для сообщений */
+    .message-container {
+        background-color: #f5f5f5;
+        padding: 10px;
+        border: 1px solid #dddddd;
+        margin-bottom: 10px;
+    }
+
+    .chat-link {
+        color: #007bff;
+        text-decoration: none;
+    }
+</style>
+
 <a href="{% url 'community:create_community' %}">Создать сообщество</a>
 
 <br><br>
-{% for community in communities %}
-    <a href="{{ community.name }}/">{{ community.name }}</a>
-
-    <h6>создатель - {{ community.creator }}</h6>
-{% endfor %}
+<div class="message-container">
+    {% for community in communities %}
+        {% for profile_community in profiles_community %}
+            {% if profile_community.community == community %}
+                <div class="row">
+                    <div class="col-2">
+                        {% if profile_community.image %}
+                            <img src="{{ profile_community.image.url }}" alt="Post Image" width="50" height="50" style="border-radius: 50%;">
+                        {% endif %}
+                    </div>
+                    <div class="col-10">
+                        <a href="{{ community.name }}/">{{ community.name }}</a>
+                        <h6>создатель - {{ community.creator }}</h6>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</div>
 
 
 {% endblock %}

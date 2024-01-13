@@ -30,6 +30,7 @@ class BlogUser(models.Model):
     @staticmethod
     def handle_like(request, post_id, action, user, username):
         post = BlogUser.objects.get(id=post_id)
+        print(request, post_id, action, user, username)
         if action == 'like':
             post.likes += 1
             post.liked_users.add(user)

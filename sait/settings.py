@@ -27,6 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'captcha',
     'relog',
     'profiles',
     'mechat',
@@ -118,6 +119,8 @@ STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'static'
 
 
+RECAPTCHA_PUBLIC_KEY = '6Lc33kgpAAAAAGrw6mWFdMyG-pS5Lod6q2S_AZN_'
+RECAPTCHA_PRIVATE_KEY = '6Lc33kgpAAAAAF5_dOf4pd_B3yApG6VQeupGcK7r'
 
 
 # Default primary key field type

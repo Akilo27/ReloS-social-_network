@@ -5,11 +5,13 @@ from .models import Community,CommunityProfile,BlogCommunity
 
 def community_list(request):
     communities = Community.objects.all()
-    return render(request, 'community/community_list.html', {'communities': communities})
+    profiles_community = CommunityProfile.objects.all()
+    return render(request, 'community/community_list.html', {'communities': communities,
+                                                             'profiles_community':profiles_community})
 
 
 def community_detail(request, name):
-    community = Community.objects.get(name=name)
+    community = get_object_or_404(Community, name=name)
     blog_community = BlogCommunity.objects.filter(community=community)
     profile_community = CommunityProfile.objects.get(community=community)
 
@@ -24,11 +26,16 @@ def create_community(request):
         if form.is_valid():
             community = form.save(commit=False)
             community.creator = request.user
-            community.save()
-            community.members.add(request.user)
 
-            CommunityProfile.objects.create(community=community)
-            return redirect('community:community_list')
+            # Проверка наличия модели с таким же именем
+            existing_community = Community.objects.filter(name=community.name).exists()
+            if existing_community:
+                form.add_error('name', 'Сообщество с таким именем уже существует')
+            else:
+                community.save()
+                community.members.add(request.user)
+                CommunityProfile.objects.create(community=community)
+                return redirect('community:community_list')
     else:
         form = CommunityForm()
     return render(request, 'community/create_community.html', {'form': form})
@@ -69,6 +76,15 @@ def handle_like_view(request, username):
         community = Community.objects.get(name=username)
         BlogCommunity.handle_like(request, post_id, action, community, username)
 
+
+        referer = request.META.get('HTTP_REFERER')
+        if referer:
+            # Добавьте якорь к URL страницы
+            return redirect(referer + '#post-' + post_id)
+
+
     return redirect(request.META['HTTP_REFERER'])
+
+
 
 
